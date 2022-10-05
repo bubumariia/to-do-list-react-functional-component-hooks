@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useEffect } from "react";
 
 // select input value  ****
 // submit button has to show input value in UI ****
@@ -12,8 +13,17 @@ function Main() {
     inputValue: "",
     clicked: false,
     todos: [],
-    crossedEl: []
+    message: "",
   });
+  const [doneBtn, setDoneBtn] = useState({ doneIndex: [] });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPosition({ ...position, message: "" });
+    }, 7000);
+    return () => clearTimeout(timer);
+  });
+
   return (
     <>
       <div className="container">
@@ -27,7 +37,7 @@ function Main() {
             onChange={(event) =>
               setPosition({
                 ...position,
-                inputValue: [event.target.value]
+                inputValue: [event.target.value],
               })
             }
           />
@@ -38,34 +48,32 @@ function Main() {
                 ...position,
                 todos: [...position.todos, position.inputValue],
                 clicked: true,
-                inputValue: ""
+                inputValue: "",
+                message: "Added new item",
               })
             }
           >
             Submit
           </button>
         </div>
-        {/* <h3 className="message"> </h3> */}
+        <h3 className="message">{position.message} </h3>
         <div className="list">
           <ul className="ul">
             {position.todos.map((el, index) => (
               <div className="wrapper">
-                <p
-                // className={
-                //   position.doneBtn[index] === index ? "crossLine" : ""
-                // }
-                >
-                  {el[0]}
-                </p>
+                <p>{el[0]}</p>
                 <div>
-                  <button className="doneBtn">Done</button>
+                  <button className="doneBtn" onClick={event}>
+                    Done
+                  </button>
                   <button
                     className="trash"
                     onClick={() =>
                       setPosition({
                         todos: position.todos.filter((el, indexTrash) =>
                           indexTrash !== index ? el : ""
-                        )
+                        ),
+                        message: "Item is deleted",
                       })
                     }
                   >
@@ -74,7 +82,13 @@ function Main() {
                   <button
                     className="edit"
                     onClick={() =>
-                      setPosition({ ...position, btnIndex: index })
+                      setPosition({
+                        todos: position.todos.filter((el, indexTrash) =>
+                          indexTrash !== index ? el : ""
+                        ),
+                        inputValue: el,
+                        message: "Please, edit the value",
+                      })
                     }
                   >
                     Edit
@@ -88,7 +102,13 @@ function Main() {
           {position.todos.length > 0 ? (
             <button
               className="deleteButton"
-              onClick={() => setPosition({ ...position, todos: [] })}
+              onClick={() =>
+                setPosition({
+                  ...position,
+                  todos: [],
+                  message: "Cleared the list of items",
+                })
+              }
             >
               {" "}
               Clear Items
