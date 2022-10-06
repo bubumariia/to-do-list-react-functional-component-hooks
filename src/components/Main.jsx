@@ -2,25 +2,18 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 
-// select input value  ****
-// submit button has to show input value in UI ****
-// new component which will create element(div > p > Delete button > Edit button)***
-// create new component, it will work for displaying the message
-// new comp which will clear the whole items list
-
 function Main() {
   const [position, setPosition] = useState({
     inputValue: "",
     clicked: false,
     todos: [],
-    message: "",
+    message: ""
   });
-  const [doneBtn, setDoneBtn] = useState({ doneIndex: [] });
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setPosition({ ...position, message: "" });
-    }, 7000);
+    }, 3000);
     return () => clearTimeout(timer);
   });
 
@@ -37,7 +30,7 @@ function Main() {
             onChange={(event) =>
               setPosition({
                 ...position,
-                inputValue: [event.target.value],
+                inputValue: [event.target.value]
               })
             }
           />
@@ -49,7 +42,7 @@ function Main() {
                 todos: [...position.todos, position.inputValue],
                 clicked: true,
                 inputValue: "",
-                message: "Added new item",
+                message: "Added new item"
               })
             }
           >
@@ -63,9 +56,6 @@ function Main() {
               <div className="wrapper">
                 <p>{el[0]}</p>
                 <div>
-                  <button className="doneBtn" onClick={event}>
-                    Done
-                  </button>
                   <button
                     className="trash"
                     onClick={() =>
@@ -73,7 +63,7 @@ function Main() {
                         todos: position.todos.filter((el, indexTrash) =>
                           indexTrash !== index ? el : ""
                         ),
-                        message: "Item is deleted",
+                        message: "Item is deleted"
                       })
                     }
                   >
@@ -87,7 +77,7 @@ function Main() {
                           indexTrash !== index ? el : ""
                         ),
                         inputValue: el,
-                        message: "Please, edit the value",
+                        message: "Please, edit the value"
                       })
                     }
                   >
@@ -106,7 +96,7 @@ function Main() {
                 setPosition({
                   ...position,
                   todos: [],
-                  message: "Cleared the list of items",
+                  message: "Cleared the list of items"
                 })
               }
             >
